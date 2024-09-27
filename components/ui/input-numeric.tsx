@@ -1,20 +1,19 @@
-import * as React from "react";
+import React, {useState} from "react";
 
 import { cn } from "@/lib/utils";
 import { NumericFormat, NumericFormatProps, NumberFormatValues } from "react-number-format";
-import { Input } from "./input";
 
 export interface InputProps
   extends NumericFormatProps {
   maxValue?: number;
   suffix?: string;
   decimalScale?: number;
+  onValueChange?: (values: NumberFormatValues) => void;
 }
 
 const InputNumeric = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, maxValue = 10000000, suffix = ' kr', decimalScale = 0, ...props }, ref) => {
-
-    const MAX_LIMIT = 10000000;
+  ({ className, maxValue = 10000000, onValueChange, suffix = ' kr', decimalScale = 0, ...props }, ref) => {
+    const [number, setNumber] = useState<number | null>(null);
 
     return (
       <NumericFormat
@@ -26,6 +25,8 @@ const InputNumeric = React.forwardRef<HTMLInputElement, InputProps>(
         decimalSeparator=","
         allowNegative={false}
         suffix={suffix}
+        value={number}
+        onValueChange={onValueChange}
         isAllowed={(values: NumberFormatValues) => {
           const { floatValue } = values;
           return (floatValue ?? 0) < maxValue;
