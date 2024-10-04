@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import LoanForm from "@/components/loan-form";
+import LoanForm from "@/components/LoanForm";
 
 export default async function ProtectedPage() {
   const supabase = createClient();
