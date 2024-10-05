@@ -12,7 +12,7 @@ export default async function AuthButton() {
 
   if (!hasEnvVars) {
     return (
-      <>
+      <div>
         <div className="flex gap-4 items-center">
           <div>
             <Badge
@@ -43,7 +43,7 @@ export default async function AuthButton() {
             </Button>
           </div>
         </div>
-      </>
+      </div>
     );
   }
   return user ? (

@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "./SubmitButton";
 import * as Form from "@radix-ui/react-form";
 import { useState, FormEvent } from "react";
 import LoanDetailsSection from "./LoanDetailsSection";
@@ -116,7 +117,7 @@ function LoanForm() {
         <Form.Root onSubmit={handleSubmit}>
         <LoanDetailsSection handleInputChange={handleInputChange} />
           <Form.Submit asChild>
-            <Button>Submit</Button>
+            <SubmitButton>Submit</SubmitButton>
           </Form.Submit>
         </Form.Root>
       </div>
