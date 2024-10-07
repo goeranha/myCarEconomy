@@ -1,12 +1,12 @@
-import { EnvVarWarning } from "@/components/env-var-warning";
+import React from 'react';
 import HeaderAuth from "@/components/header-auth";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import Image from 'next/image';
 import KostioLogo from "../assets/kostio-logo.png";
 import Link from "next/link";
+import FooterMenu from "@/components/FooterMenu";
 import type { Viewport } from 'next';
 import "./globals.css";
 
@@ -27,11 +27,8 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
@@ -48,17 +45,15 @@ export default function RootLayout({
                   <div className="flex gap-5 items-center font-semibold">
                     <Link href={"/"}><Image src={KostioLogo} alt="Kostio Logo" width={32} /></Link>
                   </div>
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                  <HeaderAuth />
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 max-w-5xl p-5">
+              <div className="flex flex-col gap-20 max-w-5xl w-full p-3">
                 {children}
               </div>
 
-              <footer className="w-full absolute bottom-0 flex items-center justify-center border-t mx-auto text-center text-xs py-4">
-                <p>
-                  Copyright maagi
-                </p>
+              <footer className="w-full flex justify-center">
+                <FooterMenu className={`fixed bottom-0 w-full transition-transform duration-500`}/>
                 <ThemeSwitcher />
               </footer>
             </div>

@@ -1,9 +1,27 @@
+import React from 'react';
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import LoanForm from "@/components/LoanForm";
+import Card from "@/components/Card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default async function ProtectedPage() {
+const MinSide = async () => {
   const supabase = createClient();
+
+  const fetchData = async () => {
+    const { data, error } = await supabase
+      .from('loan_calculations')
+      .select('*');
+  
+    if (error) {
+      console.error('Error fetching data:', error);
+      return [];
+    }
+  
+    return data;
+  };
+  
+  const data = await fetchData();
 
   const {
     data: { user },
@@ -15,7 +33,11 @@ export default async function ProtectedPage() {
 
   return (
     <div>
-      <LoanForm/>
+      <Card data={data} />
+      <Button><Link href="/min-side/loan-form">Legg til ny bil</Link></Button>
     </div>
   );
 }
+
+export default MinSide;
+
