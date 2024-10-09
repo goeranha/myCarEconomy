@@ -3,6 +3,7 @@ import HeaderAuth from "@/components/header-auth";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
+import { createClient } from "@/utils/supabase/server";
 import Image from 'next/image';
 import KostioLogo from "../assets/kostio-logo.png";
 import Link from "next/link";
@@ -26,8 +27,12 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
 }
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+  const supabase = createClient();
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
@@ -40,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col items-center">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+              <nav className="w-full justify-center border-b border-b-foreground/10 h-16 hidden md:flex">
                 <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
                   <div className="flex gap-5 items-center font-semibold">
                     <Link href={"/"}><Image src={KostioLogo} alt="Kostio Logo" width={32} /></Link>
@@ -48,12 +53,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <HeaderAuth />
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 max-w-5xl w-full p-3">
+              <div className="flex flex-col gap-20 max-w-5xl w-full items-center p-3">
                 {children}
               </div>
 
               <footer className="w-full flex justify-center">
-                <FooterMenu className={`fixed bottom-0 w-full transition-transform duration-500`}/>
+                <FooterMenu className={`fixed bottom-0 w-full transition-transform duration-500 md:hidden`} user={user} />
                 <ThemeSwitcher />
               </footer>
             </div>
@@ -63,3 +68,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
+export default RootLayout;

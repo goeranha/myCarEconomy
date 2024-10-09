@@ -18,18 +18,18 @@ export const signUpAction = async (formData: FormData) => {
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback`,
-    },
+    // options: {
+    //   emailRedirectTo: `${origin}/auth/callback`,
+    // },
   });
 
   if (error) {
     console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
+    return encodedRedirect("error", "/registrer-deg", error.message);
   } else {
     return encodedRedirect(
       "success",
-      "/sign-up",
+      "/registrer-deg",
       "Thanks for signing up! Please check your email for a verification link.",
     );
   }
@@ -46,10 +46,10 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+    return encodedRedirect("error", "/logg-inn", error.message);
   }
 
-  return redirect("/min-side");
+  return redirect("/");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -59,18 +59,18 @@ export const forgotPasswordAction = async (formData: FormData) => {
   const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
-    return encodedRedirect("error", "/forgot-password", "Email is required");
+    return encodedRedirect("error", "/glemt-passord", "Email is required");
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?redirect_to=/min-side/reset-password`,
+    redirectTo: `${origin}/auth/callback?redirect_to=/sammenlign/tilbakestill-passord`,
   });
 
   if (error) {
     console.error(error.message);
     return encodedRedirect(
       "error",
-      "/forgot-password",
+      "/tilbakestill-passord",
       "Could not reset password",
     );
   }
@@ -81,7 +81,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
 
   return encodedRedirect(
     "success",
-    "/forgot-password",
+    "/tilbakestill-passord",
     "Check your email for a link to reset your password.",
   );
 };
@@ -95,7 +95,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (!password || !confirmPassword) {
     encodedRedirect(
       "error",
-      "/min-side/reset-password",
+      "/sammenlign/tilbakestill-passord",
       "Password and confirm password are required",
     );
   }
@@ -103,7 +103,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (password !== confirmPassword) {
     encodedRedirect(
       "error",
-      "/min-side/reset-password",
+      "/sammenlign/tilbakestill-passord",
       "Passwords do not match",
     );
   }
@@ -115,7 +115,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (error) {
     encodedRedirect(
       "error",
-      "/min-side/reset-password",
+      "/sammenlign/tilbakestill-passord",
       "Password update failed",
     );
   }
@@ -126,9 +126,9 @@ export const resetPasswordAction = async (formData: FormData) => {
 export const signOutAction = async () => {
   const supabase = createClient();
   await supabase.auth.signOut();
-  return redirect("/sign-in");
+  return redirect("/logg-inn");
 };
 
 export const submitRedirect = () => {
-  return redirect("/min-side");
+  return redirect("/sammenlign");
 };

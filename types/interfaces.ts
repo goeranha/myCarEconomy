@@ -11,6 +11,7 @@ export interface LoanData {
     toll_passage_monthly: number;
     tax_refund: number;
     interest_cost_ownership: number;
+    calculation_name: string;
   }
 
 export interface LoanCalculations extends LoanData {

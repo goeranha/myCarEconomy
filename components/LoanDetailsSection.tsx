@@ -1,12 +1,21 @@
-import InputField from "./InputField";
+import { InputField, InputFieldText } from "./InputField";
 import { NumberFormatValues } from "react-number-format";
+import { LoanData } from "@/types/interfaces";
 
 interface LoanDetailsSectionProps {
   handleInputChange: (name: string, values: NumberFormatValues) => void;
+  setFormValues: React.Dispatch<React.SetStateAction<LoanData>>;
 }
 
-const LoanDetailsSection = ({ handleInputChange }: LoanDetailsSectionProps) => (
+const LoanDetailsSection = ({ handleInputChange, setFormValues }: LoanDetailsSectionProps) => (
   <div>
+    <InputFieldText
+      name="calculation_name"
+      label="Biltype"
+      placeholder="Audi A4"
+      required
+      onChange={(value) => setFormValues((prevValues) => ({ ...prevValues, calculation_name: value }))}
+    />
     <InputField
       name="car_price"
       label="Pris på bil"

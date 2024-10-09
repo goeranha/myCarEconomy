@@ -16,6 +16,7 @@ const useLoanForm = () => {
     toll_passage_monthly: 0,
     tax_refund: 0,
     interest_cost_ownership: 0,
+    calculation_name: "",
   });
 
   const handleInputChange = (name: string, values: NumberFormatValues) => {

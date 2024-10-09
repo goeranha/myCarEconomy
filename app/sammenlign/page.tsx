@@ -34,7 +34,7 @@ const MinSide = async () => {
   return (
     <div>
       <Card data={data} />
-      <Button><Link href="/min-side/loan-form">Legg til ny bil</Link></Button>
+      <Button><Link href="/sammenlign/legg-til-bil/">Legg til ny bil</Link></Button>
     </div>
   );
 }

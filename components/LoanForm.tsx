@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from "@/components/ui/button";
 import { SubmitButton } from "./SubmitButton";
 import * as Form from "@radix-ui/react-form";
 import { useState, FormEvent } from "react";
@@ -10,7 +9,7 @@ import { generatePaymentPlan, lookupResidualValue, calculateLoanTerm } from "@/u
 import useLoanForm from "@/hooks/useLoanForm";
 
 function LoanForm() {
-  const { formValues, handleInputChange } = useLoanForm();
+  const { formValues, handleInputChange, setFormValues } = useLoanForm();
   const [status, setStatus] = useState<string>('');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -45,6 +44,7 @@ function LoanForm() {
       monthly_payment: monthlyPayment,
       tax_refund: taxRefund,
       interest_cost_ownership: 0,
+      calculation_name: formValues.calculation_name,
     };
 
     // Generer betalingsplanen
@@ -113,9 +113,9 @@ function LoanForm() {
   return (
     <div className="flex-1 w-full min-w-64 flex flex-col gap-12">
       <div>
-        <h2 className="font-bold text-2xl mb-4">Next step</h2>
+        <h2 className="font-bold text-2xl mb-4">Legg til bil</h2>
         <Form.Root onSubmit={handleSubmit}>
-        <LoanDetailsSection handleInputChange={handleInputChange} />
+        <LoanDetailsSection handleInputChange={handleInputChange} setFormValues={setFormValues} />
           <Form.Submit asChild>
             <SubmitButton>Submit</SubmitButton>
           </Form.Submit>

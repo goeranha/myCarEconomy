@@ -3,9 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, HeartIcon, AvatarIcon } from '@radix-ui/react-icons';
+import { Calculator, CarIcon, CircleUser, Home } from 'lucide-react';
+import { User } from '@supabase/auth-js';
 
-const FooterMenu = ({ className }: { className: string }) => {
+interface FooterMenuProps {
+  className: string;
+  user: User | null;
+}
+
+const FooterMenu = ({ className, user }: FooterMenuProps) => {
     const [showFooter, setShowFooter] = useState(true);
     const pathname = usePathname();
 
@@ -24,26 +30,43 @@ const FooterMenu = ({ className }: { className: string }) => {
         window.removeEventListener('scroll', handleScroll);
       };
     }, []);
-  
 
   return (
     <nav className={`${className} fixed bottom-0 w-full bg-black border-t border-t-foreground/10 ${showFooter ? 'translate-y-0' : 'translate-y-full'}`}>
       <div className="flex justify-evenly py-2.5">
-        {/* Utforsk */}
-        <Link href="/min-side">
+
+        {/* Hjem */}
+        <Link href="/">
           <div className="flex flex-col items-center cursor-pointer min-w-20">
-            <HomeIcon className={`w-6 h-6 ${pathname === '/min-side' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`} />
-            <span className={`mt-1 text-xs ${pathname === '/min-side' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`}>Min side</span>
+            <Calculator className={`w-6 h-6 ${pathname === '/' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`} />
+            <span className={`mt-1 text-xs ${pathname === '/' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`}>Beregn</span>
           </div>
         </Link>
 
-        {/* Logg inn */}
-        <Link href="/sign-in">
+        {/* Sammenligning */}
+        {user ? 
+        <Link href="/sammenlign">
           <div className="flex flex-col items-center cursor-pointer min-w-20">
-            <AvatarIcon className={`w-6 h-6 ${pathname === '/sign-in' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`} />
-            <span className={`mt-1 text-xs ${pathname === '/sign-in' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`}>{pathname === '/sign-in' ? "Logg inn" : "Profil"}</span>
+            <CarIcon className={`w-6 h-6 ${pathname === '/sammenlign' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`} />
+            <span className={`mt-1 text-xs ${pathname === '/sammenlign' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`}>Sammenlign</span>
           </div>
+        </Link> : null}
+
+        {/* Logg inn / Profil */}
+        {user ? 
+        <Link href="/profil">
+          <div className="flex flex-col items-center cursor-pointer min-w-20">
+            <CircleUser className={`w-6 h-6 ${pathname === '/profil' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`} />
+            <span className={`mt-1 text-xs ${pathname === '/profil' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`}>Profil</span>
+          </div> 
         </Link>
+          :
+        <Link href="/logg-inn">
+          <div className="flex flex-col items-center cursor-pointer min-w-20">
+            <CircleUser className={`w-6 h-6 ${pathname === '/logg-inn' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`} />
+            <span className={`mt-1 text-xs ${pathname === '/logg-inn' ? 'text-white-500 font-medium' : 'text-gray-500 font-light'}`}>Logg inn</span>
+          </div>
+        </Link>}
       </div>
     </nav>
   );
