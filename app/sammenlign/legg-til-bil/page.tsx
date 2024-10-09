@@ -11,7 +11,7 @@ import Link from "next/link";
 import { submitRedirect } from "@/app/actions";
 
 function LoanForm() {
-  const { formValues, handleInputChange } = useLoanForm();
+  const { formValues, handleInputChange, setFormValues } = useLoanForm();
   const [status, setStatus] = useState<string>('');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -46,6 +46,7 @@ function LoanForm() {
       monthly_payment: monthlyPayment,
       tax_refund: taxRefund,
       interest_cost_ownership: 0,
+      calculation_name: formValues.calculation_name,
     };
 
     // Generer betalingsplanen
@@ -117,7 +118,7 @@ function LoanForm() {
       <div>
         <h2 className="font-bold text-2xl mb-4">Next step</h2>
         <Form.Root onSubmit={handleSubmit}>
-        <LoanDetailsSection handleInputChange={handleInputChange} />
+        <LoanDetailsSection handleInputChange={handleInputChange} setFormValues={setFormValues} />
           <Form.Submit asChild>
             <SubmitButton pendingText="Signing In...">Registrer</SubmitButton>
           </Form.Submit>
